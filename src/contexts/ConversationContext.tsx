@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface ConversationTopic {
+export interface ConversationTopic {
   id: string;
   title: string;
   description: string;
@@ -9,13 +9,20 @@ interface ConversationTopic {
   initialPrompt: string;
 }
 
+export interface FeedbackType {
+  id?: string;
+  type: 'grammar' | 'pronunciation' | 'vocabulary' | 'fluency' | 'praise';
+  message: string;
+  suggestion?: string;
+}
+
 interface ConversationContextType {
   messages: Array<{ id: string; speaker: 'user' | 'avatar'; text: string; timestamp: Date }>;
   addMessage: (speaker: 'user' | 'avatar', text: string) => void;
   userInput: string;
   setUserInput: (input: string) => void;
-  feedback: Array<{ id: string; type: 'grammar' | 'pronunciation' | 'vocabulary'; text: string }>;
-  addFeedback: (feedback: { type: 'grammar' | 'pronunciation' | 'vocabulary'; text: string }) => void;
+  feedback: FeedbackType[];
+  addFeedback: (feedback: Omit<FeedbackType, 'id'>) => void;
   isAvatarSpeaking: boolean;
   setIsAvatarSpeaking: (speaking: boolean) => void;
   learningLevel: string;
@@ -32,7 +39,7 @@ const ConversationContext = createContext<ConversationContextType | undefined>(u
 export const ConversationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [messages, setMessages] = useState<Array<{ id: string; speaker: 'user' | 'avatar'; text: string; timestamp: Date }>>([]);
   const [userInput, setUserInput] = useState('');
-  const [feedback, setFeedback] = useState<Array<{ id: string; type: 'grammar' | 'pronunciation' | 'vocabulary'; text: string }>>([]);
+  const [feedback, setFeedback] = useState<FeedbackType[]>([]);
   const [isAvatarSpeaking, setIsAvatarSpeaking] = useState(false);
   const [learningLevel, setLearningLevel] = useState('beginner');
   const [currentTopic, setCurrentTopic] = useState<ConversationTopic | null>(null);
@@ -42,7 +49,7 @@ export const ConversationProvider: React.FC<{ children: ReactNode }> = ({ childr
     setMessages(prev => [...prev, { id: Math.random().toString(), speaker, text, timestamp: new Date() }]);
   };
 
-  const addFeedback = (newFeedback: { type: 'grammar' | 'pronunciation' | 'vocabulary'; text: string }) => {
+  const addFeedback = (newFeedback: Omit<FeedbackType, 'id'>) => {
     setFeedback(prev => [...prev, { id: Math.random().toString(), ...newFeedback }]);
   };
 

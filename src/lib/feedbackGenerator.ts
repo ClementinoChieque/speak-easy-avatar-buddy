@@ -29,7 +29,7 @@ const praiseTemplates = [
 ];
 
 // Generate feedback based on user input
-export const generateFeedback = (userInput: string): FeedbackType | null => {
+export const generateFeedback = (userInput: string): Omit<FeedbackType, 'id'> | null => {
   // Return null sometimes to simulate not always giving feedback
   if (Math.random() < 0.25 && userInput.length > 20) {
     return null;
