@@ -10,7 +10,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useConversation } from '@/contexts/ConversationContext';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Languages } from 'lucide-react';
+
+const LanguageSelector: React.FC = () => {
+  const { learningLanguage, setLearningLanguage } = useConversation();
+  
+  return (
+    <div className="flex items-center gap-2">
+      <Languages className="h-4 w-4" />
+      <Select
+        value={learningLanguage}
+        onValueChange={(value: "en" | "pt") => setLearningLanguage(value)}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select language" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="en">English</SelectItem>
+          <SelectItem value="pt">Português</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+};
 
 const LevelSelector: React.FC = () => {
   const { learningLevel, setLearningLevel } = useConversation();
@@ -36,35 +58,63 @@ const LevelSelector: React.FC = () => {
 };
 
 const TopicSelector: React.FC = () => {
-  const topics = [
-    {
-      id: '1',
-      title: 'Ordering at a Restaurant',
-      description: 'Practice ordering food and drinks at a restaurant.',
-      difficulty: 'beginner' as const,
-      initialPrompt: "Hello! Welcome to our restaurant. What would you like to order today?"
-    },
-    {
-      id: '2',
-      title: 'Job Interview',
-      description: 'Practice answering common job interview questions.',
-      difficulty: 'intermediate' as const,
-      initialPrompt: "Good morning! Thanks for coming in today. Could you tell me a bit about yourself?"
-    },
-    {
-      id: '3',
-      title: 'Business Negotiation',
-      description: 'Practice negotiating a business deal or contract.',
-      difficulty: 'advanced' as const,
-      initialPrompt: "Let's discuss the terms of our potential partnership. What are your thoughts on our initial proposal?"
-    }
-  ];
+  const { learningLanguage } = useConversation();
+  
+  const topics = {
+    en: [
+      {
+        id: '1',
+        title: 'Ordering at a Restaurant',
+        description: 'Practice ordering food and drinks at a restaurant.',
+        difficulty: 'beginner' as const,
+        initialPrompt: "Hello! Welcome to our restaurant. What would you like to order today?"
+      },
+      {
+        id: '2',
+        title: 'Job Interview',
+        description: 'Practice answering common job interview questions.',
+        difficulty: 'intermediate' as const,
+        initialPrompt: "Good morning! Thanks for coming in today. Could you tell me a bit about yourself?"
+      },
+      {
+        id: '3',
+        title: 'Business Negotiation',
+        description: 'Practice negotiating a business deal or contract.',
+        difficulty: 'advanced' as const,
+        initialPrompt: "Let's discuss the terms of our potential partnership. What are your thoughts on our initial proposal?"
+      }
+    ],
+    pt: [
+      {
+        id: '1',
+        title: 'Pedindo em um Restaurante',
+        description: 'Pratique fazer pedidos de comida e bebida em inglês.',
+        difficulty: 'beginner' as const,
+        initialPrompt: "Hello! Welcome to our restaurant. What would you like to order today?"
+      },
+      {
+        id: '2',
+        title: 'Entrevista de Emprego',
+        description: 'Pratique responder perguntas comuns de entrevista de emprego em inglês.',
+        difficulty: 'intermediate' as const,
+        initialPrompt: "Good morning! Thanks for coming in today. Could you tell me a bit about yourself?"
+      },
+      {
+        id: '3',
+        title: 'Negociação Empresarial',
+        description: 'Pratique negociar acordos e contratos em inglês.',
+        difficulty: 'advanced' as const,
+        initialPrompt: "Let's discuss the terms of our potential partnership. What are your thoughts on our initial proposal?"
+      }
+    ]
+  };
   
   const { setCurrentTopic } = useConversation();
+  const currentTopics = topics[learningLanguage || 'en'];
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {topics.map((topic) => (
+      {currentTopics.map((topic) => (
         <Card 
           key={topic.id} 
           className="cursor-pointer hover:shadow-md transition-shadow"
@@ -121,6 +171,10 @@ const AppContent: React.FC = () => {
       </header>
       
       <main className="max-w-4xl mx-auto">
+        <div className="flex justify-end mb-4">
+          <LanguageSelector />
+        </div>
+        
         <Tabs defaultValue="practice" className="w-full mb-8">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="practice">Practice Conversation</TabsTrigger>
