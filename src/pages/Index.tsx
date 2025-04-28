@@ -41,21 +41,21 @@ const TopicSelector: React.FC = () => {
       id: '1',
       title: 'Ordering at a Restaurant',
       description: 'Practice ordering food and drinks at a restaurant.',
-      difficulty: 'beginner',
+      difficulty: 'beginner' as const,
       initialPrompt: "Hello! Welcome to our restaurant. What would you like to order today?"
     },
     {
       id: '2',
       title: 'Job Interview',
       description: 'Practice answering common job interview questions.',
-      difficulty: 'intermediate',
+      difficulty: 'intermediate' as const,
       initialPrompt: "Good morning! Thanks for coming in today. Could you tell me a bit about yourself?"
     },
     {
       id: '3',
       title: 'Business Negotiation',
       description: 'Practice negotiating a business deal or contract.',
-      difficulty: 'advanced',
+      difficulty: 'advanced' as const,
       initialPrompt: "Let's discuss the terms of our potential partnership. What are your thoughts on our initial proposal?"
     }
   ];
