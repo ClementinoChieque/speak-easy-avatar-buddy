@@ -10,7 +10,7 @@ const Header: React.FC = () => {
         <Sparkles className="h-6 w-6 text-avatar-accent animate-pulse-light" />
       </h1>
       <p className="text-gray-600 max-w-2xl mx-auto">
-        Practice English conversations with your AI language buddy. Get real-time feedback and improve your speaking skills.
+        Pratique inglês com IA em tempo real e desenvolva a sua habilidade.
       </p>
     </header>
   );
